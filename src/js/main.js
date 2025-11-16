@@ -366,7 +366,7 @@ function updateDiagnostics(result) {
 async function openReference() {
     if (!referenceLoaded) {
         try {
-            const response = await fetch('docs/dm-reference.md');
+            const response = await fetch('/docs/dm-reference.md');
             const markdown = await response.text();
             if (window.marked) {
                 elements.referenceContent.innerHTML = marked.parse(markdown);
@@ -494,7 +494,7 @@ async function loadTreatise() {
     // Always reload to get the latest changes
     try {
         console.log('[Main] Loading treatise...');
-        const response = await fetch('A Treatise on Arcane Matrices.md?' + Date.now());
+        const response = await fetch('/docs/A Treatise on Arcane Matrices.md?' + Date.now());
         
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);

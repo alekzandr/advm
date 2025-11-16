@@ -136,7 +136,7 @@ export class TreatiseViewer {
    */
   async loadTreatise() {
     try {
-      const response = await fetch('A Treatise on Arcane Matrices.md');
+      const response = await fetch('/docs/A Treatise on Arcane Matrices.md');
       if (!response.ok) {
         throw new Error('Failed to load treatise');
       }
