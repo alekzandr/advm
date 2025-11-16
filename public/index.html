@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcanae Dimensional Vector Matrix Console</title>
+    <meta name="description" content="Interactive web interface for managing spell matrices using the post-divine arcane geometry system">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/css/main.css">
+    <link rel="stylesheet" href="/src/css/cube3d.css">
+    <link rel="stylesheet" href="/src/css/responsive.css">
+</head>
+<body>
+    <nav class="app-navigation">
+        <button class="nav-tab" id="consoleTab" data-view="console">
+            <span class="nav-icon">⊞</span>
+            <span>ADVM Console</span>
+        </button>
+        <button class="nav-tab active" id="treatiseTab" data-view="treatise">
+            <span class="nav-icon">📜</span>
+            <span>Treatise</span>
+        </button>
+    </nav>
+
+    <div class="app-shell" id="consoleView" style="display: none;">
+        <header class="app-header">
+            <div class="title-block">
+                <h1>Arcanae Dimensional Vector Matrix Console</h1>
+                <p>Interactive codex for tracing, disrupting, and documenting ADVM constructs</p>
+            </div>
+            <div class="session-controls">
+                <button id="toggleViewBtn" class="btn primary" title="Click to switch modes">
+                    <span class="view-icon">🎭</span>
+                    <span class="view-label">Current Mode: Player</span>
+                </button>
+                <button id="loadSpellBtn" class="btn">Load Spell</button>
+                <button id="newPuzzleBtn" class="btn secondary">Generate Puzzle</button>
+                <button id="exportNotesBtn" class="btn ghost">Export Notes</button>
+            </div>
+        </header>
+
+        <section class="workspace">
+            <aside class="glyph-bank-panel" aria-label="Glyph bank and library">
+                <div class="panel-header">
+                    <h2>Glyph Bank</h2>
+                    <button id="manageGlyphsBtn" class="icon-btn" title="Manage glyph library">⚙️</button>
+                </div>
+                <div class="search-group">
+                    <label for="glyphSearch">Search glyphs</label>
+                    <input type="search" id="glyphSearch" placeholder="Filter by name, layer, or symbol">
+                </div>
+                <div class="glyph-filters">
+                    <select id="filterCategory" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <option value="school">Schools</option>
+                        <option value="action">Actions</option>
+                        <option value="influence">Influences</option>
+                        <option value="shape">Shapes</option>
+                        <option value="duration">Durations</option>
+                        <option value="component">Components</option>
+                        <option value="save">Saving Throws</option>
+                        <option value="specialist">Specialist</option>
+                    </select>
+                    <select id="filterLayer" class="filter-select">
+                        <option value="all">All Layers</option>
+                        <option value="MVM">MVM</option>
+                        <option value="CL">CL</option>
+                        <option value="SL">SL</option>
+                    </select>
+                    <button id="clearFilters" class="btn ghost small">Clear</button>
+                </div>
+                <div class="filter-results">
+                    <span id="glyphCount">0 glyphs</span>
+                </div>
+                <div class="glyph-list" id="glyphList" role="list">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="notes-section">
+                    <h3>Field Notes</h3>
+                    <textarea id="glyphNotes" placeholder="Record findings. Notes sync locally and export as Markdown."></textarea>
+                    <button id="saveNotesBtn" class="btn block">Save Notes</button>
+                </div>
+            </aside>
+
+            <main class="matrix-panel" aria-label="Matrix interaction area">
+                <div class="matrix-toolbar">
+                    <div class="spell-meta">
+                        <label>
+                            Discipline
+                            <select id="disciplineSelect"></select>
+                        </label>
+                        <label>
+                            Spell Level
+                            <select id="levelSelect"></select>
+                        </label>
+                        <label>
+                            Mode
+                            <select id="modeSelect">
+                                <option value="construct">Construct</option>
+                                <option value="disrupt">Disrupt</option>
+                                <option value="analyze">Analyze</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="layer-tabs" role="tablist">
+                        <button class="layer-tab active" data-layer="mvm" role="tab" aria-selected="true">Mechanical Vector Matrix</button>
+                        <button class="layer-tab" data-layer="cl" role="tab" aria-selected="false">Component Layer</button>
+                        <button class="layer-tab" data-layer="sl" role="tab" aria-selected="false">Specialist Layer</button>
+                    </div>
+                </div>
+
+                <section class="matrix-stage" id="matrixStage">
+                    <!-- Matrix grids injected here -->
+                </section>
+
+                <section class="flow-console">
+                    <div class="flow-path">
+                        <h3>Flow Trace</h3>
+                        <ol id="flowPathDisplay">
+                            <li>Awaiting selection…</li>
+                        </ol>
+                    </div>
+                    <div class="flow-actions">
+                        <button id="undoStepBtn" class="btn ghost">Undo Step</button>
+                        <button id="resetFlowBtn" class="btn ghost">Reset</button>
+                        <button id="commitFlowBtn" class="btn">Commit Sequence</button>
+                    </div>
+                    <div class="diagnostics" id="diagnosticsPanel">
+                        <h4>Diagnostics</h4>
+                        <ul>
+                            <li>Identity Check: <span data-diagnostic="identity">—</span></li>
+                            <li>Proportion Check: <span data-diagnostic="proportion">—</span></li>
+                            <li>Compatibility: <span data-diagnostic="compatibility">—</span></li>
+                            <li>Bounds: <span data-diagnostic="bounds">—</span></li>
+                            <li>Conduit Integrity: <span data-diagnostic="conduits">—</span></li>
+                        </ul>
+                    </div>
+                </section>
+            </main>
+
+            <aside class="puzzle-panel" aria-label="Puzzle framework">
+                <div class="panel-header">
+                    <h2>Puzzle Framework</h2>
+                    <select id="puzzleDifficulty">
+                        <option value="apprentice">Apprentice</option>
+                        <option value="journeyman">Journeyman</option>
+                        <option value="archmage">Archmage</option>
+                    </select>
+                </div>
+                <div class="puzzle-card" id="activePuzzle">
+                    <h3>Active Scenario</h3>
+                    <p class="puzzle-description">No puzzle loaded. Generate one to begin.</p>
+                    <ul class="puzzle-objectives"></ul>
+                    <div class="puzzle-hints"></div>
+                </div>
+                <div class="history-log">
+                    <h3>Session Log</h3>
+                    <ul id="sessionLog"></ul>
+                </div>
+            </aside>
+        </section>
+
+        <footer class="app-footer">
+            <p>ADVM Console · Derived from the Treatise of Archmage Veylarin Thest · Built for table-ready magical investigations.</p>
+            <button id="openReferenceBtn" class="btn ghost">Treatise Reference</button>
+        </footer>
+    </div>
+
+    <div class="treatise-view" id="treatiseView" style="display: block;">
+        <div class="treatise-container">
+            <aside class="treatise-toc" id="treatiseTOC">
+                <h2>Table of Contents</h2>
+                <!-- Generated dynamically -->
+            </aside>
+            <main class="treatise-content" id="treatiseContent">
+                <div class="loading">Loading treatise...</div>
+            </main>
+        </div>
+    </div>
+
+    <dialog id="referenceModal">
+        <article>
+            <header>
+                <h2>Matrix Reference Extract</h2>
+                <button id="closeReferenceBtn" class="icon-btn" aria-label="Close reference">✕</button>
+            </header>
+            <div class="modal-content" id="referenceContent">
+                <!-- Populated from docs/dm-reference.md -->
+            </div>
+        </article>
+    </dialog>
+
+    <dialog id="glyphManagerModal" class="glyph-inspector-modal">
+        <article class="inspector-container">
+            <header class="inspector-header">
+                <div class="glyph-symbol-large" id="inspectorSymbol">?</div>
+                <div class="glyph-details" id="inspectorDetails">
+                    <h2 id="inspectorName">Glyph Name</h2>
+                    <p id="inspectorMeta"><span id="inspectorLayer">Layer</span> · <span id="inspectorPosition">Position</span></p>
+                    <p id="inspectorMeaning">Meaning</p>
+                </div>
+                <button id="closeGlyphManager" class="icon-btn" aria-label="Close glyph inspector" title="Close">✕</button>
+            </header>
+            <section class="modal-content" id="glyphManagerContent">
+                <div class="notes-editor-wrapper">
+                    <h3>Your Notes</h3>
+                    <textarea id="inspectorNotes" class="notes-editor" placeholder="Record your observations, theories, and cross-references here..."></textarea>
+                </div>
+            </section>
+            <footer class="inspector-actions">
+                <button id="saveInspectorNotes" class="btn primary">Save Notes</button>
+                <button id="exportGlyphNote" class="btn ghost">Export as Markdown</button>
+            </footer>
+        </article>
+    </dialog>
+
+    <dialog id="nodeGlyphSelector" class="node-selector-modal">
+        <article class="selector-container">
+            <header class="selector-header">
+                <div>
+                    <h2>Assign Glyph to Node</h2>
+                    <p id="selectedNodeInfo">Select a glyph for this position</p>
+                </div>
+                <button id="closeNodeSelector" class="icon-btn" aria-label="Close selector" title="Close">✕</button>
+            </header>
+            <div class="selector-filters">
+                <input type="search" id="selectorSearch" placeholder="Search glyphs...">
+                <select id="selectorCategory" class="filter-select">
+                    <option value="all">All Categories</option>
+                    <option value="school">Schools</option>
+                    <option value="action">Actions</option>
+                    <option value="influence">Influences</option>
+                    <option value="shape">Shapes</option>
+                    <option value="duration">Durations</option>
+                    <option value="component">Components</option>
+                    <option value="save">Saving Throws</option>
+                    <option value="specialist">Specialist</option>
+                </select>
+            </div>
+            <section class="selector-content" id="selectorGlyphList">
+                <!-- Populated dynamically -->
+            </section>
+            <footer class="selector-actions">
+                <button id="clearNodeGlyph" class="btn ghost">Clear Node</button>
+                <button id="cancelNodeSelector" class="btn ghost">Cancel</button>
+            </footer>
+        </article>
+    </dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

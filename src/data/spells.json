@@ -1,0 +1,155 @@
+[
+  {
+    "id": "fireball",
+    "name": "Fireball",
+    "discipline": "Evocation",
+    "level": 3,
+    "summary": "A concentrated orb of Weave-fire that detonates outward.",
+    "mvm": {
+      "source": {
+        "discipline": "Evocation",
+        "potency": "ᚱ (3rd)",
+        "interval": "Swift vector"
+      },
+      "transformation": {
+        "action": "Destructive shaping",
+        "influence": "Fire / light",
+        "force": "ᛞ intensity"
+      },
+      "projection": {
+        "shape": "Expanding sphere (20 ft)",
+        "range": "150 ft line-of-sight",
+        "duration": "Instant release"
+      }
+    },
+    "cl": {
+      "row1": {
+        "utterance": "Incantation of Haloch",
+        "gesture": "Forward thrust / open palm",
+        "material": "Sulphur-bound bat guano"
+      },
+      "row2": {
+        "catalyst": "Not required",
+        "substitution": "Arcane focus permitted",
+        "stability": "Caster must maintain sight"
+      },
+      "row3": {
+        "will": "No concentration",
+        "resistance": "DEX save",
+        "alignment": "Save DC"
+      }
+    },
+    "sl": {
+      "guaranteed": "Ignites unattended combustibles",
+      "conditional": "Half damage on success",
+      "complex": "Shockwave amplifies if constrained",
+      "branching": "Overcharge expands radius, reduces control",
+      "recursive": null,
+      "planar": "Minor ethereal bleed",
+      "contradiction": "Weakened in antimagic fields",
+      "paradox": null
+    }
+  },
+  {
+    "id": "shield",
+    "name": "Shield",
+    "discipline": "Abjuration",
+    "level": 1,
+    "summary": "Immediate planar fold that deflects incoming force.",
+    "mvm": {
+      "source": {
+        "discipline": "Abjuration",
+        "potency": "ᛁ (1st)",
+        "interval": "Reflexive"
+      },
+      "transformation": {
+        "action": "Barrier weaving",
+        "influence": "Force",
+        "force": "ᛉ resistant"
+      },
+      "projection": {
+        "shape": "Personal barrier",
+        "range": "Self",
+        "duration": "Instant + 1 round"
+      }
+    },
+    "cl": {
+      "row1": {
+        "utterance": "Single syllabic ward",
+        "gesture": "Rising forearm",
+        "material": "None"
+      },
+      "row2": {
+        "catalyst": "Not required",
+        "substitution": "—",
+        "stability": "Must perceive the threat"
+      },
+      "row3": {
+        "will": "No concentration",
+        "resistance": "None",
+        "alignment": "+5 to AC"
+      }
+    },
+    "sl": {
+      "guaranteed": "Blocks magic missile",
+      "conditional": "Fails if unconscious",
+      "complex": null,
+      "branching": null,
+      "recursive": null,
+      "planar": null,
+      "contradiction": "Cannot form within antimagic",
+      "paradox": null
+    }
+  },
+  {
+    "id": "counterspell",
+    "name": "Counterspell",
+    "discipline": "Abjuration",
+    "level": 3,
+    "summary": "Interrupts an opposing matrix before it stabilizes.",
+    "mvm": {
+      "source": {
+        "discipline": "Abjuration",
+        "potency": "ᚱ (3rd)",
+        "interval": "Reaction"
+      },
+      "transformation": {
+        "action": "Matrix disruption",
+        "influence": "Null harmonic",
+        "force": "ᛞ canceling"
+      },
+      "projection": {
+        "shape": "Targeted unweaving",
+        "range": "60 ft",
+        "duration": "Instant"
+      }
+    },
+    "cl": {
+      "row1": {
+        "utterance": "Fracture cant",
+        "gesture": "Cutting sigil",
+        "material": "None"
+      },
+      "row2": {
+        "catalyst": "—",
+        "substitution": "—",
+        "stability": "Requires sight of matrix"
+      },
+      "row3": {
+        "will": "No concentration",
+        "resistance": "Opposed caster roll",
+        "alignment": "Spell check"
+      }
+    },
+    "sl": {
+      "guaranteed": "Negates spell if equal level",
+      "conditional": "Check for higher level",
+      "complex": "Can cascade if timed poorly",
+      "branching": "Partial failures cause inversion",
+      "recursive": "Can trigger feedback",
+      "planar": null,
+      "contradiction": null,
+      "paradox": "Risk of backlash when matrix unknown"
+    }
+  }
+]

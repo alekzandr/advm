@@ -1,0 +1,62 @@
+{
+  "apprentice": [
+    {
+      "id": "warded-door",
+      "title": "Warded Archive Door",
+      "description": "A simple barrier keyed to a 1st-level Abjuration matrix. One sigil is missing.",
+      "objectives": [
+        "Trace the inward spiral flow to identify the absent node",
+        "Reconstruct the Component Layer to stable state"
+      ],
+      "hints": [
+        "Abjuration flows always close at Projection-Range",
+        "The missing sigil corresponds to casting interval"
+      ]
+    },
+    {
+      "id": "false-echo",
+      "title": "False Echo",
+      "description": "Illusion nodes flicker out of sequence as the party enters an antechamber.",
+      "objectives": [
+        "Determine whether the flow folds outward or inward",
+        "Disrupt the mirrored node before it repeats twice"
+      ],
+      "hints": [
+        "Illusion pathways cross the central row twice",
+        "Watch for recursive indicators in Specialist Layer"
+      ]
+    }
+  ],
+  "journeyman": [
+    {
+      "id": "broken-confluence",
+      "title": "Broken Confluence",
+      "description": "Two overlapping Conjuration matrices compete over a summoning circle.",
+      "objectives": [
+        "Identify which Flow Path resolves first",
+        "Use Disruption mode to collapse the unstable branch",
+        "Stabilize Component Layer conduits"
+      ],
+      "hints": [
+        "Branching outcomes sit in the Specialist Layer's middle row",
+        "The later spell uses a longer interval glyph"
+      ]
+    }
+  ],
+  "archmage": [
+    {
+      "id": "antagonistic-weave",
+      "title": "Antagonistic Weave",
+      "description": "A necromantic paradox bleeds into a planar gate, creating recursive death waves.",
+      "objectives": [
+        "Trace the descending Necromancy flow while monitoring recursion",
+        "Deploy Counterspell timing before node three completes",
+        "Log every Specialist Layer contradiction in the glyph bank"
+      ],
+      "hints": [
+        "Depth requirement equals twice the hostile matrix level",
+        "Recursive nodes glow in alternating pulses"
+      ]
+    }
+  ]
+}

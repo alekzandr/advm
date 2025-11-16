@@ -1,0 +1,339 @@
+/* 3D Cube Matrix Styles */
+
+.cube-viewport {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.cube-controls {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(244, 239, 227, 0.5);
+    border-bottom: 1px solid var(--grid-outline);
+    justify-content: center;
+}
+
+.cube-btn {
+    padding: 0.5rem 1rem;
+    background: var(--bg-panel);
+    border: 1px solid var(--grid-outline);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+}
+
+.cube-btn:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.layer-selector {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--grid-outline);
+    justify-content: center;
+}
+
+.layer-btn {
+    padding: 0.5rem 1.5rem;
+    background: transparent;
+    border: 2px solid var(--grid-outline);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.layer-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent-dark);
+}
+
+.layer-btn.active {
+    background: var(--accent);
+    border-color: var(--accent-dark);
+    color: white;
+}
+
+.cube-container {
+    flex: 1;
+    perspective: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+.cube-container:active {
+    cursor: grabbing;
+}
+
+.cube {
+    width: 450px;
+    height: 450px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+}
+
+.matrix-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: opacity 0.3s ease;
+}
+
+.layer-title {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent-dark);
+    background: var(--bg-panel);
+    padding: 0.3rem 1rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.layer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    background: rgba(253, 245, 230, 0.95);
+    border: 2px solid var(--grid-outline);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    /* Keep pointer events enabled on grid */
+}
+
+/* Nodes handle their own pointer events */
+.layer-grid > * {
+    position: relative;
+    z-index: 1;
+}
+
+.mvm-layer .layer-grid {
+    background: rgba(255, 248, 240, 0.95);
+    border-color: #d4a574;
+}
+
+.cl-layer .layer-grid {
+    background: rgba(240, 248, 255, 0.95);
+    border-color: #7aa3cc;
+}
+
+.sl-layer .layer-grid {
+    background: rgba(248, 240, 255, 0.95);
+    border-color: #a37acc;
+}
+
+.matrix-node-3d {
+    aspect-ratio: 1;
+    background: white;
+    border: 2px solid var(--grid-outline);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    z-index: 10;
+}
+
+.matrix-node-3d:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(197, 151, 63, 0.4), 0 0 20px rgba(255, 215, 0, 0.3);
+    transform: scale(1.12);
+    z-index: 50;
+    background: rgba(255, 255, 255, 1);
+}
+
+.matrix-node-3d:active {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(197, 151, 63, 0.5);
+}
+
+.matrix-node-3d.empty {
+    background: rgba(200, 200, 200, 0.2);
+    border-style: dashed;
+}
+
+.matrix-node-3d.hidden {
+    background: rgba(200, 200, 200, 0.3);
+    border-style: dashed;
+}
+
+.matrix-node-3d.hidden .node-glyph {
+    filter: blur(4px);
+    opacity: 0.3;
+}
+
+.matrix-node-3d.hidden .node-purpose {
+    display: none;
+}
+
+/* Player mode: unrevealed nodes */
+.matrix-node-3d.hidden-node {
+    background: rgba(230, 230, 230, 0.4);
+    border: 2px dashed rgba(150, 150, 150, 0.4);
+    cursor: default;
+}
+
+.matrix-node-3d.hidden-node .node-glyph {
+    color: rgba(150, 150, 150, 0.5);
+    font-size: 2rem;
+}
+
+.matrix-node-3d.hidden-node:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: rgba(150, 150, 150, 0.4);
+}
+
+
+.node-glyph {
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--ink);
+    transition: transform 0.1s;
+    pointer-events: none;
+}
+
+.node-purpose {
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    right: 0;
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-align: center;
+    padding: 2px;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.matrix-node-3d:hover .node-purpose {
+    opacity: 1;
+}
+
+/* DM Mode - Always show purpose */
+.dm-mode .node-purpose {
+    opacity: 0.8;
+}
+
+.dm-mode .matrix-node-3d:hover .node-purpose {
+    opacity: 1;
+}
+
+/* Player Mode - Hide non-revealed nodes */
+.player-mode .matrix-node-3d.hidden .node-glyph {
+    content: '◯';
+    filter: blur(6px);
+}
+
+.cube-hint {
+    padding: 0.75rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    background: rgba(244, 239, 227, 0.5);
+    border-top: 1px solid var(--grid-outline);
+}
+
+.cube-hint kbd {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background: white;
+    border: 1px solid var(--grid-outline);
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    margin: 0 0.2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .cube {
+        width: 350px;
+        height: 350px;
+    }
+    
+    .node-glyph {
+        font-size: 2rem;
+    }
+    
+    .layer-selector {
+        flex-wrap: wrap;
+    }
+    
+    .cube-controls {
+        flex-wrap: wrap;
+    }
+}
+
+/* Flow path highlighting */
+.matrix-node-3d.highlighted {
+    border-color: var(--accent, #d4af37);
+    box-shadow: 0 0 15px var(--accent, #d4af37);
+    background: rgba(212, 175, 55, 0.15);
+    z-index: 10;
+}
+
+.matrix-node-3d.flow-active {
+    animation: pulse-glow 1s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 15px var(--accent, #d4af37);
+    }
+    50% {
+        box-shadow: 0 0 25px var(--accent, #d4af37), 0 0 35px var(--accent, #d4af37);
+    }
+}
+
+@media (max-width: 480px) {
+    .cube {
+        width: 280px;
+        height: 280px;
+    }
+    
+    .node-glyph {
+        font-size: 1.5rem;
+    }
+    
+    .layer-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.85rem;
+    }
+}
