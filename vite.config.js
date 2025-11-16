@@ -1,20 +1,17 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import { copyFileSync, mkdirSync, existsSync } from 'fs';
 
 export default defineConfig({
-  base: '/advm/',  // Update this to match your GitHub repo name
+  base: '/advm/',
+  root: 'public',
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
+    emptyOutDir: true,
     assetsDir: 'assets',
-    rollupOptions: {
-      input: resolve(__dirname, 'public/index.html')
-    },
-    // Generate source maps for debugging
-    sourcemap: true,
-    // Copy JSON data files
-    copyPublicDir: true
+    sourcemap: true
   },
-  publicDir: 'src/data',
+  publicDir: '../src/data',
   server: {
     port: 3000,
     open: true
