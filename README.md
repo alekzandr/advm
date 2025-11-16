@@ -2,9 +2,9 @@
 
 **Arcane Dimensional Vector Matrix Console** - An interactive web-based interface for managing and visualizing spell matrices using the post-divine arcane geometry system.
 
-[![Deploy to GitHub Pages](https://github.com/yourusername/advm/actions/workflows/deploy.yml/badge.svg)](https://github.com/yourusername/advm/actions/workflows/deploy.yml)
+[![Deploy to GitHub Pages](https://github.com/alekzandr/advm/actions/workflows/deploy.yml/badge.svg)](https://github.com/alekzandr/advm/actions/workflows/deploy.yml)
 
-🔮 **[Live Demo](https://yourusername.github.io/advm/)** | 📖 **[Documentation](./docs/)** | 🎮 **[Treatise](./docs/A-Treatise-on-Arcane-Matrices.md)**
+🔮 **[Live Demo](https://alekzandr.github.io/advm/)** | 📖 **[Documentation](./docs/)** | 🎮 **[Treatise](./docs/A-Treatise-on-Arcane-Matrices.md)**
 
 ## Overview
 
@@ -52,8 +52,8 @@ The ADVM Console is a specialized tool for Dungeon Masters and players to constr
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/advm-console.git
-cd advm-console
+git clone https://github.com/alekzandr/advm.git
+cd advm
 
 # Install dependencies
 npm install
@@ -167,7 +167,7 @@ npm run lint -- --fix
    git add .
    git commit -m "Initial commit"
    git branch -M main
-   git remote add origin https://github.com/yourusername/advm-console.git
+   git remote add origin https://github.com/alekzandr/advm.git
    git push -u origin main
    ```
 
@@ -176,7 +176,7 @@ npm run lint -- --fix
    - Source: "GitHub Actions"
    - The workflow will automatically build and deploy on every push to `main`
 
-5. **Access Site**: Visit `https://yourusername.github.io/advm-console/`
+5. **Access Site**: Visit `https://alekzandr.github.io/advm/`
 
 ### Manual Deployment
 
