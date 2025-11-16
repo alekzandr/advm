@@ -7,14 +7,13 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'public/index.html')
-      }
+      input: resolve(__dirname, 'public/index.html')
     },
     // Generate source maps for debugging
-    sourcemap: true
+    sourcemap: true,
+    // Copy JSON data files
+    copyPublicDir: true
   },
-  // Copy data files to dist
   publicDir: 'src/data',
   server: {
     port: 3000,
