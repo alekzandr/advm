@@ -1,6 +1,25 @@
 // Test setup file for Vitest
 import { beforeEach, afterEach, vi } from 'vitest';
 
+// Polyfill PointerEvent for jsdom
+if (!global.PointerEvent) {
+  global.PointerEvent = class PointerEvent extends MouseEvent {
+    constructor(type, params = {}) {
+      super(type, params);
+      this.pointerId = params.pointerId || 0;
+      this.width = params.width || 0;
+      this.height = params.height || 0;
+      this.pressure = params.pressure || 0;
+      this.tangentialPressure = params.tangentialPressure || 0;
+      this.tiltX = params.tiltX || 0;
+      this.tiltY = params.tiltY || 0;
+      this.twist = params.twist || 0;
+      this.pointerType = params.pointerType || 'mouse';
+      this.isPrimary = params.isPrimary || false;
+    }
+  };
+}
+
 // Setup DOM mocks
 beforeEach(() => {
   // Mock console methods to reduce noise in tests

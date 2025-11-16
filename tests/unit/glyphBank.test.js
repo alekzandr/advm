@@ -158,6 +158,11 @@ describe('GlyphBank', () => {
 
     it('should update filters on select change', () => {
       const select = document.getElementById('filterCategory');
+      // Add options to the select element
+      select.innerHTML = `
+        <option value="all">All</option>
+        <option value="school">School</option>
+      `;
       select.value = 'school';
       select.dispatchEvent(new Event('change'));
       
