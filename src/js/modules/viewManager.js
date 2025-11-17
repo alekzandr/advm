@@ -3,16 +3,21 @@
  * Handles DM/Player view switching and authentication
  */
 
+import { RateLimiter, hashPassword } from '../utils/security.js';
+
 export class ViewManager {
   constructor() {
     this.currentView = this.loadSavedView() || 'player';
     this.revealedNodes = new Set(this.loadRevealedNodes());
     this.dmAuthenticated = false;
     this.listeners = new Set();
+    this.authLimiter = new RateLimiter(5, 300000); // 5 attempts per 5 minutes
+    this.sessionTimeout = null;
     
-    // Check if DM was previously authenticated
-    if (localStorage.getItem('dmAuthenticated') === 'true') {
+    // Check if DM was previously authenticated (session-based)
+    if (sessionStorage.getItem('dmAuthenticated') === 'true') {
       this.dmAuthenticated = true;
+      this.startSessionTimeout();
       if (this.currentView === 'dm') {
         this.currentView = 'dm'; // Restore DM view
       }
@@ -70,8 +75,15 @@ export class ViewManager {
   async authenticateDM() {
     console.log('[ViewManager] Starting DM authentication...');
     
+    // Check rate limiting
+    if (!this.authLimiter.check()) {
+      const retryAfter = Math.ceil(this.authLimiter.getRetryAfter() / 1000);
+      alert(`⏱️ Too many authentication attempts. Please try again in ${retryAfter} seconds.`);
+      return false;
+    }
+    
     // Use simple prompt for immediate functionality
-    const storedKey = localStorage.getItem('dmKey') || 'arcane2024';
+    const storedKeyHash = sessionStorage.getItem('dmKeyHash');
     const password = prompt('🔐 Enter DM password to access full matrix view:\n\n(Default: arcane2024)');
     
     if (password === null) {
@@ -79,16 +91,49 @@ export class ViewManager {
       return false;
     }
     
-    if (password === storedKey) {
+    // Validate password complexity
+    if (password.length < 8) {
+      alert('❌ Password must be at least 8 characters.');
+      return false;
+    }
+    
+    // Hash the entered password
+    const passwordHash = await hashPassword(password);
+    
+    // First time or compare with stored hash
+    const defaultHash = await hashPassword('arcane2024');
+    const isValid = storedKeyHash ? passwordHash === storedKeyHash : passwordHash === defaultHash;
+    
+    if (isValid) {
       console.log('[ViewManager] Authentication successful');
       this.dmAuthenticated = true;
-      localStorage.setItem('dmAuthenticated', 'true');
+      sessionStorage.setItem('dmAuthenticated', 'true');
+      sessionStorage.setItem('dmKeyHash', passwordHash);
+      this.startSessionTimeout();
       return true;
     } else {
       console.log('[ViewManager] Authentication failed - incorrect password');
       alert('❌ Incorrect password. Please try again.');
       return false;
     }
+  }
+  
+  /**
+   * Start session timeout (30 minutes)
+   * @private
+   */
+  startSessionTimeout() {
+    // Clear existing timeout
+    if (this.sessionTimeout) {
+      clearTimeout(this.sessionTimeout);
+    }
+    
+    // Set 30 minute timeout
+    this.sessionTimeout = setTimeout(() => {
+      console.log('[ViewManager] Session expired');
+      this.logoutDM();
+      alert('🕐 Your DM session has expired. Please authenticate again.');
+    }, 30 * 60 * 1000); // 30 minutes
   }
 
   /**
@@ -119,7 +164,15 @@ export class ViewManager {
    */
   logoutDM() {
     this.dmAuthenticated = false;
-    localStorage.removeItem('dmAuthenticated');
+    sessionStorage.removeItem('dmAuthenticated');
+    sessionStorage.removeItem('dmKeyHash');
+    
+    // Clear session timeout
+    if (this.sessionTimeout) {
+      clearTimeout(this.sessionTimeout);
+      this.sessionTimeout = null;
+    }
+    
     if (this.currentView === 'dm') {
       this.setView('player');
     }
@@ -129,11 +182,14 @@ export class ViewManager {
    * Set custom DM password
    * @param {string} password - New DM password
    */
-  setDMPassword(password) {
-    if (!password || password.length < 4) {
-      throw new Error('Password must be at least 4 characters');
+  async setDMPassword(password) {
+    if (!password || password.length < 8) {
+      throw new Error('Password must be at least 8 characters');
     }
-    localStorage.setItem('dmKey', password);
+    
+    // Hash and store the password
+    const passwordHash = await hashPassword(password);
+    sessionStorage.setItem('dmKeyHash', passwordHash);
   }
 
   /**

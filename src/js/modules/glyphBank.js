@@ -1,3 +1,5 @@
+import { sanitizeHTML } from '../utils/security.js';
+
 const STORAGE_KEY = 'advm_glyph_notes';
 
 export class GlyphBank {
@@ -137,15 +139,23 @@ export class GlyphBank {
         filteredGlyphs.forEach(glyph => {
                 const card = document.createElement('article');
                 card.className = 'glyph-card';
+                
+                // Sanitize user-facing data
+                const name = sanitizeHTML(glyph.name);
+                const layer = sanitizeHTML(glyph.layer);
+                const position = sanitizeHTML(glyph.position);
+                const symbol = sanitizeHTML(glyph.symbol);
+                const id = sanitizeHTML(glyph.id);
+                
                 card.innerHTML = `
                     <div>
-                        <div class="symbol">${glyph.symbol}</div>
+                        <div class="symbol">${symbol}</div>
                         <div class="meta">
-                            <strong>${glyph.name}</strong>
-                            <p>${glyph.layer} · ${glyph.position}</p>
+                            <strong>${name}</strong>
+                            <p>${layer} · ${position}</p>
                         </div>
                     </div>
-                    <button class="btn ghost" data-glyph="${glyph.id}">Inspect</button>
+                    <button class="btn ghost" data-glyph="${id}">Inspect</button>
                 `;
                 card.querySelector('button').addEventListener('click', () => this.openGlyph(glyph.id));
                 this.listEl.appendChild(card);

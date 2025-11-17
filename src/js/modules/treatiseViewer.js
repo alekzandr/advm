@@ -3,6 +3,8 @@
  * Modal viewer for the ADVM treatise document
  */
 
+import { sanitizeMarkdown } from '../utils/security.js';
+
 export class TreatiseViewer {
   constructor() {
     this.modal = null;
@@ -157,7 +159,7 @@ export class TreatiseViewer {
     const tocContainer = this.modal.querySelector('.treatise-toc');
     
     // Parse markdown (basic parsing - you may want to use a library like marked.js)
-    const html = this.parseMarkdown(markdown);
+    const html = sanitizeMarkdown(markdown);
     
     // Extract table of contents
     const toc = this.extractTOC(html);

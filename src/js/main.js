@@ -12,6 +12,7 @@ import { loadSpells, findSpell } from './data/spellLibrary.js';
 import { loadGlyphs } from './data/glyphs.js';
 import { loadPuzzles } from './data/puzzles.js';
 import { SCHOOL_PROFILES, listDisciplines } from './data/schools.js';
+import { sanitizeMarkdown, createCSPMetaTag, RateLimiter, hashPassword } from './utils/security.js';
 
 const state = {
     spells: [],
@@ -35,10 +36,14 @@ let noteManager;
 let viewManager;
 let revealManager;
 let referenceLoaded = false;
+const authRateLimiter = new RateLimiter(5, 300000); // 5 attempts per 5 minutes
 
 document.addEventListener('DOMContentLoaded', initialize);
 
 async function initialize() {
+    // Add security headers
+    addSecurityHeaders();
+    
     cacheElements();
     try {
         const [spells, glyphs, puzzles] = await Promise.all([
@@ -51,9 +56,24 @@ async function initialize() {
         state.puzzles = puzzles;
         setupUI();
     } catch (error) {
-        console.error(error);
-        alert('Unable to initialize ADVM console. See console for details.');
+        console.error('Initialization error');
+        alert('Unable to initialize ADVM console. Please try again.');
     }
+}
+
+/**
+ * Add security headers and CSP
+ */
+function addSecurityHeaders() {
+    // Add CSP meta tag
+    const cspTag = createCSPMetaTag();
+    document.head.appendChild(cspTag);
+    
+    // Add X-Frame-Options equivalent
+    const frameOptions = document.createElement('meta');
+    frameOptions.httpEquiv = 'X-Frame-Options';
+    frameOptions.content = 'DENY';
+    document.head.appendChild(frameOptions);
 }
 
 function cacheElements() {
@@ -369,7 +389,7 @@ async function openReference() {
             const response = await fetch('/docs/dm-reference.md');
             const markdown = await response.text();
             if (window.marked) {
-                elements.referenceContent.innerHTML = marked.parse(markdown);
+                elements.referenceContent.innerHTML = sanitizeMarkdown(markdown);
             } else {
                 elements.referenceContent.textContent = markdown;
             }
@@ -501,7 +521,7 @@ async function loadTreatise() {
         }
         
         const markdown = await response.text();
-        const html = marked.parse(markdown);
+        const html = sanitizeMarkdown(markdown);
         
         elements.treatiseContent.innerHTML = html;
         generateTOC(html);
@@ -510,13 +530,14 @@ async function loadTreatise() {
         console.log('[Main] Treatise loaded successfully');
     } catch (error) {
         console.error('[Main] Failed to load treatise:', error);
-        elements.treatiseContent.innerHTML = `
-            <div class="error-message">
-                <h2>⚠️ Unable to Load Treatise</h2>
-                <p>The treatise document could not be found.</p>
-                <p><small>Looking for: A Treatise on Arcane Matrices.md</small></p>
-            </div>
-        `;
+        const errorHTML = sanitizeMarkdown(`
+## ⚠️ Unable to Load Treatise
+
+The treatise document could not be found.
+
+_Looking for: A Treatise on Arcane Matrices.md_
+        `);
+        elements.treatiseContent.innerHTML = errorHTML;
     }
 }
 
