@@ -6,7 +6,9 @@ export async function loadSpells() {
         const data = await response.json();
         return data.spells || [];
     } catch (error) {
-        console.error('Error loading spells:', error);
+        if (process.env.NODE_ENV !== 'test') {
+            console.error('Error loading spells:', error);
+        }
         return [];
     }
 }

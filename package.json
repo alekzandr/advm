@@ -9,8 +9,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
+    "test:unit": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
+    "test:build": "vitest run tests/unit/build.test.js",
+    "validate": "npm run test:unit && npm run build",
     "lint": "eslint src/",
     "deploy": "npm run build && gh-pages -d dist"
   },

@@ -1,8 +1,8 @@
 // Test setup file for Vitest
 import { beforeEach, afterEach, vi } from 'vitest';
 
-// Polyfill PointerEvent for jsdom
-if (!global.PointerEvent) {
+// Polyfill PointerEvent for jsdom (only if MouseEvent exists)
+if (typeof MouseEvent !== 'undefined' && !global.PointerEvent) {
   global.PointerEvent = class PointerEvent extends MouseEvent {
     constructor(type, params = {}) {
       super(type, params);
@@ -33,23 +33,27 @@ beforeEach(() => {
     error: console.error
   };
 
-  // Mock localStorage
-  const localStorageMock = {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn()
-  };
-  global.localStorage = localStorageMock;
+  // Mock localStorage (only in browser-like environment)
+  if (typeof window !== 'undefined') {
+    const localStorageMock = {
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn()
+    };
+    global.localStorage = localStorageMock;
+  }
 
   // Mock fetch
   global.fetch = vi.fn();
 });
 
 afterEach(() => {
-  // Cleanup DOM
-  document.body.innerHTML = '';
-  document.head.innerHTML = '';
+  // Cleanup DOM (only in jsdom environment)
+  if (typeof document !== 'undefined') {
+    document.body.innerHTML = '';
+    document.head.innerHTML = '';
+  }
   
   // Clear all mocks
   vi.clearAllMocks();

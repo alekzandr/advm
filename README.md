@@ -113,6 +113,12 @@ npm run test:ui
 
 # Generate coverage report
 npm run test:coverage
+
+# Run only build validation tests
+npm run test:build
+
+# Run all tests + build (recommended before pushing)
+npm run validate
 ```
 
 ### Code Quality

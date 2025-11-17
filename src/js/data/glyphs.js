@@ -6,7 +6,9 @@ export async function loadGlyphs() {
         const data = await response.json();
         return data.glyphs || [];
     } catch (error) {
-        console.error('Error loading glyphs:', error);
+        if (process.env.NODE_ENV !== 'test') {
+            console.error('Error loading glyphs:', error);
+        }
         return [];
     }
 }

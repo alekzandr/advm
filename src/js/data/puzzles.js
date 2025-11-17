@@ -6,7 +6,9 @@ export async function loadPuzzles() {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Error loading puzzles:', error);
+        if (process.env.NODE_ENV !== 'test') {
+            console.error('Error loading puzzles:', error);
+        }
         return { apprentice: [], journeyman: [], archmage: [] };
     }
 }
