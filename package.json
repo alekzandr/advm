@@ -13,7 +13,8 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "test:build": "vitest run tests/unit/build.test.js",
-    "validate": "npm run test:unit && npm run build",
+    "test:build-output": "vitest run tests/unit/buildOutput.test.js",
+    "validate": "npm run test:unit && npm run build && npm run test:build-output",
     "lint": "eslint src/",
     "deploy": "npm run build && gh-pages -d dist"
   },

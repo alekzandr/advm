@@ -59,9 +59,14 @@ describe('Build Configuration', () => {
       expect(viteConfig).toContain("base: '/advm/'");
     });
 
-    it('should not have root set to public', () => {
+    it('should have publicDir set to public', () => {
       const viteConfig = readFileSync('vite.config.js', 'utf-8');
-      expect(viteConfig).not.toContain("root: 'public'");
+      expect(viteConfig).toContain("publicDir: 'public'");
+    });
+
+    it('should have root set to current directory', () => {
+      const viteConfig = readFileSync('vite.config.js', 'utf-8');
+      expect(viteConfig).toContain("root: '.'");
     });
   });
 

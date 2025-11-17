@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import { copyFileSync, mkdirSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -8,16 +7,14 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   base: '/advm/',
   root: '.',
-  publicDir: 'public',
+  publicDir: 'public',  // This will copy all files from public/ to dist/
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     assetsDir: 'assets',
     sourcemap: true,
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html')
-      }
+      input: resolve(__dirname, 'index.html')
     }
   },
   server: {
